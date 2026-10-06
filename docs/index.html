@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Prompter</title>
+  <meta name="description" content="Teleprompter para Android que sigue tu voz mientras lees y graba el vídeo él mismo. Reconocimiento de voz en el móvil, sin cuentas y sin nube." />
+  <style>
+    :root { --bg: #0e0e10; --card: #18181b; --ink: #f2eee8; --muted: #9c9891; --accent: #d62828; --line: #2e2e33; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--ink); font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; line-height: 1.55; }
+    .envoltorio { max-width: 46rem; margin: 0 auto; padding: 4rem 1.25rem 5rem; }
+    .marca { display: flex; align-items: center; gap: .6rem; margin-bottom: 2.5rem; font-weight: 800; font-size: 1.5rem; }
+    .marca i { width: 12px; height: 12px; background: var(--accent); border-radius: 2px; display: inline-block; }
+    h1 { font-size: clamp(2rem, 6vw, 2.8rem); line-height: 1.15; margin: 0 0 1rem; letter-spacing: -.02em; }
+    p.entrada { color: var(--muted); font-size: 1.1rem; margin: 0 0 2.5rem; }
+    .tarjeta { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 1.4rem; margin-bottom: 1rem; }
+    .tarjeta h2 { margin: 0 0 .4rem; font-size: 1.05rem; }
+    .tarjeta p { margin: 0; color: var(--muted); }
+    .boton { display: inline-block; background: var(--accent); color: #fff; text-decoration: none; font-weight: 700; padding: .8rem 1.4rem; border-radius: 999px; margin-top: 1.5rem; }
+    footer { margin-top: 3rem; color: var(--muted); font-size: .9rem; }
+    footer a { color: var(--ink); }
+  </style>
+</head>
+<body>
+  <div class="envoltorio">
+    <div class="marca"><i></i>Prompter</div>
+    <h1>El texto sigue tu voz.</h1>
+    <p class="entrada">Un teleprompter para Android que desplaza el guion según lees, sin tocar nada, y graba el vídeo a la vez.</p>
+
+    <div class="tarjeta">
+      <h2>Escucha en el propio móvil</h2>
+      <p>El reconocimiento de voz va dentro de la app: funciona sin conexión y tu voz no sale del teléfono.</p>
+    </div>
+    <div class="tarjeta">
+      <h2>Graba sin pelearse por el micro</h2>
+      <p>La misma app graba el vídeo y escucha tu voz con un solo micrófono, así Android no la deja en silencio a mitad de grabación.</p>
+    </div>
+    <div class="tarjeta">
+      <h2>A tu manera</h2>
+      <p>Colores, tamaño y tipo de letra, línea de lectura, velocidad, espejo, cuenta atrás, cámara, calidad y formato vertical u horizontal.</p>
+    </div>
+
+    <a class="boton" href="https://marcmayol.com/DracApps/">Instalar desde DracApps</a>
+
+    <footer>Hecho por <a href="https://marcmayol.com">Marc Mayol</a>. Se actualiza solo desde la propia app.</footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Líneas de guion que suben; la de lectura, en rojo, con su marcador. Zona segura 66dp centrada. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp" android:height="108dp"
+    android:viewportWidth="108" android:viewportHeight="108">
+    <path android:fillColor="#4DF2EEE8" android:pathData="M34,36h40a2,2 0,0 1,0 4h-40a2,2 0,0 1,0 -4z" />
+    <path android:fillColor="#99F2EEE8" android:pathData="M34,45h32a2,2 0,0 1,0 4h-32a2,2 0,0 1,0 -4z" />
+    <path android:fillColor="#FFD62828" android:pathData="M29,52l5,4l-5,4z" />
+    <path android:fillColor="#FFF2EEE8" android:pathData="M37,54h37a2,2 0,0 1,0 4h-37a2,2 0,0 1,0 -4z" />
+    <path android:fillColor="#99F2EEE8" android:pathData="M34,63h36a2,2 0,0 1,0 4h-36a2,2 0,0 1,0 -4z" />
+    <path android:fillColor="#4DF2EEE8" android:pathData="M34,72h26a2,2 0,0 1,0 4h-26a2,2 0,0 1,0 -4z" />
+</vector>
