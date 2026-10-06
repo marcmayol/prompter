@@ -1,0 +1,8 @@
+{
+  "versionCode": 5,
+  "versionName": "0.1.0",
+  "url": "https://github.com/marcmayol/prompter/releases/download/v0.1.0/prompter-v0.1.0.apk",
+  "sha256": "395b371af4b7b2c5e3908017181f2c49f16fdb4270fd66c8cb8f8caafcf9c925",
+  "notas": "Primera versión pública: el texto sigue tu voz mientras lees y la app graba el vídeo a la vez, con reconocimiento de voz en el propio móvil.",
+  "check_horas": 24
+}
