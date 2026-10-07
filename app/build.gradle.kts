@@ -29,8 +29,8 @@ android {
         applicationId = "com.marcmayol.prompter"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
-        versionCode = 5
-        versionName = "0.1.0"
+        versionCode = 6
+        versionName = "0.2.0"
         // Vosk trae librerías nativas para 4 arquitecturas; basta con el móvil (arm64) y el emulador (x86_64).
         ndk { abiFilters += listOf("arm64-v8a", "x86_64") }
     }
@@ -106,4 +106,5 @@ dependencies {
     implementation("net.java.dev.jna:jna:5.18.1@aar")
 
     testImplementation(libs.junit)
+    testImplementation("org.json:json:20231013")
 }

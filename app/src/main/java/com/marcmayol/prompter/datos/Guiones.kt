@@ -14,6 +14,8 @@ data class Guion(
     val titulo: String,
     val texto: String,
     val editado: Long = System.currentTimeMillis(),
+    /** Si viene de Notion: id de su página, para reimportarlo encima y marcarlo como grabado. */
+    val notionId: String? = null,
 )
 
 /** Un guion = un JSON en filesDir/guiones. Se escribe a disco en cuanto se guarda. */
@@ -35,6 +37,14 @@ class RepositorioGuiones(context: Context) {
 
     fun buscar(id: String): Guion? = _guiones.value.firstOrNull { it.id == id }
 
+    /** Importa una ficha de Notion: si ya estaba, la actualiza en lugar de duplicarla. */
+    suspend fun importar(notionId: String, titulo: String, texto: String): Guion {
+        val previo = _guiones.value.firstOrNull { it.notionId == notionId }
+        val g = previo?.copy(titulo = titulo, texto = texto) ?: Guion(titulo = titulo, texto = texto, notionId = notionId)
+        guardar(g)
+        return g
+    }
+
     suspend fun guardar(g: Guion) = withContext(Dispatchers.IO) {
         val nuevo = g.copy(editado = System.currentTimeMillis())
         escribir(nuevo)
@@ -48,6 +58,7 @@ class RepositorioGuiones(context: Context) {
 
     private fun escribir(g: Guion) {
         val json = JSONObject().put("id", g.id).put("titulo", g.titulo).put("texto", g.texto).put("editado", g.editado)
+            .put("notionId", g.notionId)
         val tmp = File(carpeta, "${g.id}.json.tmp")
         tmp.writeText(json.toString())
         tmp.renameTo(File(carpeta, "${g.id}.json"))
@@ -55,7 +66,8 @@ class RepositorioGuiones(context: Context) {
 
     private fun leer(f: File): Guion? = runCatching {
         val j = JSONObject(f.readText())
-        Guion(j.getString("id"), j.getString("titulo"), j.getString("texto"), j.optLong("editado"))
+        Guion(j.getString("id"), j.getString("titulo"), j.getString("texto"), j.optLong("editado"),
+            j.optString("notionId").takeIf { it.isNotBlank() && it != "null" })
     }.getOrNull()
 
     companion object {

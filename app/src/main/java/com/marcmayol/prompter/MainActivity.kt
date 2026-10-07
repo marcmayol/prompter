@@ -57,6 +57,7 @@ class MainActivity : ComponentActivity() {
         val guiones = RepositorioGuiones(this)
         val repoAjustes = RepositorioAjustes(this)
         val actualizador = (application as PrompterApp).actualizador
+        val notion = com.marcmayol.prompter.notion.AlmacenNotion(this)
 
         setContent {
             TemaPrompter {
@@ -90,7 +91,14 @@ class MainActivity : ComponentActivity() {
                         alBorrar = { id -> alcance.launch { guiones.borrar(id) } },
                         alAjustes = { desdePrompter = false; ir("ajustes", null) },
                         estadoActualizacion = estadoActualizacion,
+                        alNotion = { ir("notion", null) },
                         alActualizar = { actualizador.actualizarAhora() },
+                    )
+                    "notion" -> com.marcmayol.prompter.ui.PantallaNotion(
+                        almacen = notion,
+                        guiones = guiones,
+                        alImportar = { g -> ir("prompter", g.id) },
+                        alVolver = { ir("biblioteca", null) },
                     )
                     "editor" -> PantallaEditor(
                         guion = guionId?.let { guiones.buscar(it) },
@@ -105,6 +113,7 @@ class MainActivity : ComponentActivity() {
                             alCambiarAjustes = { a -> alcance.launch { repoAjustes.guardar(a) } },
                             alVolver = { ir("biblioteca", null) },
                             alAjustes = { desdePrompter = true; ir("ajustes") },
+                            notion = notion,
                         )
                     }
                     "ajustes" -> PantallaAjustes(
@@ -112,6 +121,7 @@ class MainActivity : ComponentActivity() {
                         alCambiar = { a -> alcance.launch { repoAjustes.guardar(a) } },
                         alRestablecer = { alcance.launch { repoAjustes.restablecer() } },
                         actualizador = actualizador,
+                        notion = notion,
                         alVolver = {
                             if (desdePrompter) { desdePrompter = false; ir("prompter") } else ir("biblioteca", null)
                         },

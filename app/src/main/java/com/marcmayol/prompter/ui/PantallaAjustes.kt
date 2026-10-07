@@ -39,6 +39,8 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -72,6 +74,7 @@ fun PantallaAjustes(
     alRestablecer: () -> Unit,
     alVolver: () -> Unit,
     actualizador: com.marcm.actualizador.Actualizador? = null,
+    notion: com.marcmayol.prompter.notion.AlmacenNotion? = null,
 ) {
     Scaffold(
         topBar = {
@@ -129,6 +132,18 @@ fun PantallaAjustes(
                 Deslizador("Zoom", ajustes.zoom, 0.5f..3f, "%.1f×".format(ajustes.zoom)) { alCambiar(ajustes.copy(zoom = it)) }
                 Texto2("Si una opción no la admite la cámara, se ignora y el prompter te lo dice arriba.")
                 Interruptor("Ver la cámara", "Miniatura en la esquina para encuadrarte", ajustes.verCamara) { alCambiar(ajustes.copy(verCamara = it)) }
+
+                if (notion != null) {
+                    Seccion("NOTION")
+                    var marcar by androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf(notion.marcarGrabado) }
+                    var conectado by androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf(notion.conectado) }
+                    Text(if (conectado) "Conectado a tu base de guiones" else "Sin conectar: hazlo desde el botón de Notion de la biblioteca",
+                        style = MaterialTheme.typography.bodyMedium, color = Marca.TextoSuave)
+                    Interruptor("Marcar como «Grabado» en Notion", "Al guardar un vídeo de un guion importado, cambia su Estado en la base", marcar) {
+                        marcar = it; notion.marcarGrabado = it
+                    }
+                    if (conectado) TextButton(onClick = { notion.desconectar(); conectado = false }) { Text("Desconectar Notion", color = Marca.Rojo) }
+                }
 
                 Seccion("APLICACIÓN")
                 if (actualizador != null) SeccionActualizaciones(actualizador)

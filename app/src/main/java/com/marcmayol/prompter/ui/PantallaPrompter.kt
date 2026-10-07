@@ -118,6 +118,7 @@ fun PantallaPrompter(
     alCambiarAjustes: (Ajustes) -> Unit,
     alVolver: () -> Unit,
     alAjustes: () -> Unit,
+    notion: com.marcmayol.prompter.notion.AlmacenNotion? = null,
     sesion: SesionPrompter = viewModel(),
 ) {
     val context = LocalContext.current
@@ -152,6 +153,14 @@ fun PantallaPrompter(
     }
 
     LaunchedEffect(guion.id, guion.texto) { sesion.preparar(guion.texto, ajustes.sensibilidad) }
+
+    // Vídeo guardado de un guion de Notion: su ficha pasa a «Grabado». Si falla (sin red…), da igual.
+    LaunchedEffect(estado) {
+        val id = guion.notionId
+        if (estado is Estado.Guardado && id != null && notion != null && notion.marcarGrabado) {
+            notion.token()?.let { t -> runCatching { com.marcmayol.prompter.notion.ClienteNotion(t).marcarEstado(id, "Grabado") } }
+        }
+    }
     LaunchedEffect(ajustes.sensibilidad) { sesion.cambiarSensibilidad(ajustes.sensibilidad) }
 
     DisposableEffect(permisos) {

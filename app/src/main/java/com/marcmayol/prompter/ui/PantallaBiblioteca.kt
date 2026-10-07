@@ -21,6 +21,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.outlined.CloudDownload
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.MoreVert
@@ -69,6 +70,7 @@ fun PantallaBiblioteca(
     alAjustes: () -> Unit,
     estadoActualizacion: com.marcm.actualizador.EstadoActualizacion = com.marcm.actualizador.EstadoActualizacion.Inactivo,
     alActualizar: () -> Unit = {},
+    alNotion: () -> Unit = {},
 ) {
     var aBorrar by remember { mutableStateOf<Guion?>(null) }
     Scaffold(
@@ -81,7 +83,10 @@ fun PantallaBiblioteca(
                         Text("Prompter", style = MaterialTheme.typography.headlineMedium)
                     }
                 },
-                actions = { IconButton(onClick = alAjustes) { Icon(Icons.Outlined.Settings, "Ajustes") } },
+                actions = {
+                    IconButton(onClick = alNotion) { Icon(Icons.Outlined.CloudDownload, "Importar de Notion") }
+                    IconButton(onClick = alAjustes) { Icon(Icons.Outlined.Settings, "Ajustes") }
+                },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Marca.Fondo),
             )
         },
