@@ -94,7 +94,6 @@ class ClienteNotion(private val token: String) {
         val c = URL("https://api.notion.com/v1/$ruta").openConnection() as HttpURLConnection
         try {
             c.requestMethod = if (metodo == "PATCH") "POST" else metodo
-            if (metodo == "PATCH") c.setRequestProperty("X-HTTP-Method-Override", "PATCH")
             c.setRequestProperty("Authorization", "Bearer $token")
             c.setRequestProperty("Notion-Version", VERSION)
             c.setRequestProperty("Content-Type", "application/json")
@@ -116,16 +115,24 @@ class ClienteNotion(private val token: String) {
         } finally { c.disconnect() }
     }
 
-    /** HttpURLConnection no admite PATCH: se fuerza el método por reflexión. */
+    /**
+     * HttpURLConnection no admite PATCH. Se fija el campo `method` por reflexión, y no solo en
+     * el objeto que devuelve URL.openConnection(): con https Android da una envoltura que delega
+     * en otra conexión (campo `delegate`), y es esa la que hace la petición.
+     */
     private fun parchear(c: HttpURLConnection) {
-        runCatching {
-            val campo = HttpURLConnection::class.java.getDeclaredField("method")
-            campo.isAccessible = true
-            campo.set(c, "PATCH")
-        }.onFailure {
-            // Algunas implementaciones (OkHttp interno de Android) sí dejan fijarlo directamente.
-            runCatching { c.requestMethod = "PATCH" }
+        val metodo = HttpURLConnection::class.java.getDeclaredField("method").apply { isAccessible = true }
+        val vistos = mutableSetOf<Any>()
+        fun fijar(o: Any?) {
+            if (o == null || !vistos.add(o)) return
+            if (o is HttpURLConnection) runCatching { metodo.set(o, "PATCH") }
+            var k: Class<*>? = o.javaClass
+            while (k != null && k != Any::class.java) {
+                k.declaredFields.filter { it.name == "delegate" }.forEach { f -> runCatching { f.isAccessible = true; fijar(f.get(o)) } }
+                k = k.superclass
+            }
         }
+        fijar(c)
     }
 
     companion object {

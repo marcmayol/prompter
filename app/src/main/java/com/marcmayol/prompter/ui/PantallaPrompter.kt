@@ -158,7 +158,11 @@ fun PantallaPrompter(
     LaunchedEffect(estado) {
         val id = guion.notionId
         if (estado is Estado.Guardado && id != null && notion != null && notion.marcarGrabado) {
-            notion.token()?.let { t -> runCatching { com.marcmayol.prompter.notion.ClienteNotion(t).marcarEstado(id, "Grabado") } }
+            notion.token()?.let { t ->
+                runCatching { com.marcmayol.prompter.notion.ClienteNotion(t).marcarEstado(id, "Grabado") }
+                    .onSuccess { android.util.Log.i("Prompter", "Notion: ficha marcada como Grabado") }
+                    .onFailure { android.util.Log.w("Prompter", "Notion: no se pudo marcar como Grabado", it) }
+            }
         }
     }
     LaunchedEffect(ajustes.sensibilidad) { sesion.cambiarSensibilidad(ajustes.sensibilidad) }
